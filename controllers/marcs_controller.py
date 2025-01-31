@@ -1,4 +1,4 @@
-from models.Marcs import Marcacoes
+from models.marcsarcs import Marcacoes
 
 class MarcsController:
     @staticmethod

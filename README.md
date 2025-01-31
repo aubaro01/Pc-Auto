@@ -8,8 +8,8 @@ Desta forma vai ajudar a reduzir <strong> o uso de papel </strong> pela oficina 
 
 Estrutura base do projeto
 
-Pc_Auto/
-├── controllers/
+Pc_Auto/<br>
+├── controllers/<br>
 │   ├── auth_controller.py
 │   ├── car_controller.py
 ├── database/

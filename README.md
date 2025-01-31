@@ -6,7 +6,7 @@ Deve fazer a gestão de clientes, veiculos e de marcações.
 
 Desta forma vai ajudar a reduzir <strong> o uso de papel </strong> pela oficina e tornar mais eficiente para quem trabalha no escritório.
 
-Estrutura base do projeto
+Estrutura base do projeto: 
 
 Pc_Auto/<br>
 ├── controllers/<br>

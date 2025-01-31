@@ -3,7 +3,7 @@ import customtkinter as ctk
 from tkinter import messagebox
 from tkcalendar import DateEntry
 from controllers.marcs_controller import MarcsController
-from models.Marcs import Marcacoes
+from models.marcs import Marcacoes
 
 class MarcsView(ctk.CTk):
     def __init__(self):

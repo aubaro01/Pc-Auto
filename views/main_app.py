@@ -3,8 +3,8 @@ from views.client_view import ClientView
 from views.car_view import CarView
 from views.marcs_view import MarcsView
 from models.clients import Cliente
-from models.Cars import Veiculo
-from models.Marcs import Marcacoes
+from models.cars import Veiculo
+from models.marcs import Marcacoes
 from tkinter import messagebox
 
 class MainApp(ctk.CTk):

@@ -1,4 +1,4 @@
-from models.db import create_connection, close_connection
+from database.db import create_connection, close_connection
 
 class Cliente:
     def __init__(self, id_cliente=None, nome=None, tel=None, nif=None, email=None, obs=None):

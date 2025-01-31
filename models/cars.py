@@ -1,4 +1,4 @@
-from models.db import create_connection, close_connection
+from database.db import create_connection, close_connection
 
 class Veiculo:
     def __init__(self, id_veiculo=None, marca=None, modelo=None, cliente_id=None, matricula=None, km=None, obs=None):

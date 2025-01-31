@@ -1,5 +1,5 @@
 import bcrypt
-from models.db import create_connection, close_connection
+from database.db import create_connection, close_connection
 
 def get_user_by_username(username):
     """Obtém os dados do usuário pelo nome de usuário."""

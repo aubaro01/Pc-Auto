@@ -10,15 +10,15 @@ Estrutura base do projeto
 
 Pc_Auto/<br>
 ├── controllers/<br>
-│   ├── auth_controller.py
-│   ├── car_controller.py
-├── database/
-│   ├── db.py
-├── models/
-│   ├── cars.py
-├── views/
-│   ├── auth_view.py
-│   ├── main_app.py
-│   ├── car_view.py
-├── main.py
-├── .env
+│   ├── auth_controller.py<br>
+│   ├── car_controller.py<br>
+├── database/<br>
+│   ├── db.py<br>
+├── models/<br>
+│   ├── cars.py<br>
+├── views/<br>
+│   ├── auth_view.py<br>
+│   ├── main_app.py<br>
+│   ├── car_view.py<br>
+├── main.py<br>
+├── .env<br>

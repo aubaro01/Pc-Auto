@@ -22,3 +22,5 @@ Pc_Auto/<br>
 │   ├── car_view.py<br>
 ├── main.py<br>
 ├── .env<br>
+
+![image](https://github.com/user-attachments/assets/2d2bbdac-3157-4902-954d-bc26466a9bd7)

@@ -88,3 +88,19 @@ class Veiculo:
                 print(f"Erro ao deletar veículo: {e}")
             finally:
                 close_connection(connection)
+    
+    @staticmethod
+    def totalVeiculos():
+        """Total de veículos"""
+        connection = create_connection()
+        if connection:
+            try:
+                cursor = connection.cursor()
+                cursor.execute("SELECT COUNT(*) FROM veiculo")
+                total = cursor.fetchone()[0]
+                return total
+            except Exception as e:
+                print(f"Erro ao buscar total de veículos: {e}")
+                return 0
+            finally:
+                close_connection(connection)    

@@ -9,10 +9,9 @@ class CarView(ctk.CTk):
         self.geometry("1000x700")
         self.resizable(True, True)
 
-        # Layout Principal
+     
         self.configure(bg="#2e2e2e")
 
-        # Título Principal
         self.label_title = ctk.CTkLabel(self, text="Gerenciamento de Veículos", font=("Arial", 26, "bold"), fg_color="#1f6aa5", text_color="white")
         self.label_title.pack(fill="x", pady=(0, 20))
 

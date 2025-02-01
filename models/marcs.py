@@ -121,3 +121,19 @@ class Marcacoes:
                 print(f"Erro ao deletar marcação: {e}")
             finally:
                 close_connection(connection)
+
+    @staticmethod
+    def totalMarcacoes():
+        """Total de marcações."""
+        connection = create_connection()
+        if connection:
+            try:
+                cursor = connection.cursor()
+                cursor.execute("SELECT COUNT(*) FROM marcacao")
+                total = cursor.fetchone()[0]
+                return total
+            except Exception as e:
+                print(f"Erro ao buscar total de marcações: {e}")
+                return 0
+            finally:
+                close_connection(connection)

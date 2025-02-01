@@ -92,15 +92,15 @@ class MainApp(ctk.CTk):
 
     def get_total_clientes(self):
         """Retorna o total de clientes cadastrados."""
-        return Clients.totalClientes()
+        return Cliente.totalClientes()
 
     def get_total_veiculos(self):
         """Retorna o total de veículos cadastrados."""
-        return Veiculo.total_veiculos()
+        return Veiculo.totalVeiculos()
 
     def get_total_marcacoes(self):
         """Retorna o total de marcações cadastradas."""
-        return Marcacoes.total_marcacoes()
+        return Marcacoes.totalMarcacoes()
 
     def abrir_client_view(self):
         """Abre a visualização de gerenciamento de clientes."""

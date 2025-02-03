@@ -1,6 +1,11 @@
 import customtkinter as ctk
 from tkinter import ttk
 
+
+
+#Tirar dados de exemplo.
+#Melhorar interface, trabalhar mais no update. Criar novas relações entre os carros e os clientes
+
 class CarView(ctk.CTk):
     def __init__(self):
         super().__init__()

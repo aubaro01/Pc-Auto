@@ -5,6 +5,9 @@ from tkcalendar import DateEntry
 from controllers.marcs_controller import MarcsController
 from models.marcs import Marcacoes
 
+
+# Melhorar interface, adicionar acessibilidade 
+
 class MarcsView(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -16,7 +19,7 @@ class MarcsView(ctk.CTk):
         # Layout Principal
         self.configure(bg="#2e2e2e")
 
-        # Título Principal
+        # Título Principa
         self.label_title = ctk.CTkLabel(self, text="Gerenciamento de Marcações", font=("Arial", 26, "bold"), fg_color="#1f6aa5", text_color="white")
         self.label_title.pack(fill="x", pady=(0, 20))
 

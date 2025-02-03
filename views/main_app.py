@@ -7,10 +7,13 @@ from models.cars import Veiculo
 from models.marcs import Marcacoes
 from tkinter import messagebox
 
+# Talvez adicionar graficos ( volume de marcações, clientes e veiculos). 
+#Melhorar design, adicionar mais funcionabilidades... mudar fundo de bem vindo...
+
 class MainApp(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.title("Pc_Auto - Principal")
+        self.title("Pc Auto - Principal")
         self.geometry("1000x700")  # Tela maior
         self.configure(bg="#2e2e2e")
 
@@ -23,7 +26,6 @@ class MainApp(ctk.CTk):
             self,
             text="Bem-vindo ao Pc Auto!",
             font=("Arial", 28, "bold"),
-            fg_color="#1f6aa5",
             text_color="white"
         )
         self.label_welcome.pack(pady=20)
@@ -41,7 +43,7 @@ class MainApp(ctk.CTk):
         # Rodapé
         self.footer = ctk.CTkLabel(
             self,
-            text="Pc_Auto © 2025",
+            text="Pc Auto © 2025",
             font=("Arial", 12),
             fg_color="#1f6aa5",
             text_color="white"

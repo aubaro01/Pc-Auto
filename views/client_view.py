@@ -4,6 +4,10 @@ from models.clients import Cliente
 import tkinter as tk
 from tkinter import ttk
 
+
+# Melhorar a forma que se vê os clientes, adicionar formas de ordenação ( clientes com mais marcs...). 
+# Melhorar o campo de pesquisa, a tabela de user. Corrigir a função de edit
+
 class ClientView(ctk.CTk):
     def __init__(self):
         super().__init__()

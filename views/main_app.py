@@ -35,6 +35,9 @@ class MainApp(ctk.CTk):
         # Adicionar cards informativos
         self.create_info_cards()
 
+        # Adicionar botões de navegação
+        self.create_nav_buttons()
+
         # Rodapé
         self.footer = ctk.CTkLabel(
             self,
@@ -51,15 +54,19 @@ class MainApp(ctk.CTk):
 
     def create_nav_buttons(self):
         """Cria os botões de navegação na aplicação."""
+        button_frame = ctk.CTkFrame(self, fg_color="#2e2e2e")
+        button_frame.pack(pady=10, padx=20, fill="x")
+
         buttons = [
             ("Gerenciar Clientes", self.abrir_client_view),
             ("Ver Veículos", self.abrir_car_view),
-            ("Ver Marcações", self.abrir_marcs_view)
+            ("Ver Marcações", self.abrir_marcs_view),
+            ("Logout", self.logout)
         ]
 
         for idx, (text, command) in enumerate(buttons):
             button = ctk.CTkButton(
-                self,
+                button_frame,
                 text=text,
                 fg_color="#1f6aa5",
                 hover_color="#155a8c",
@@ -116,6 +123,11 @@ class MainApp(ctk.CTk):
         """Abre a visualização de gerenciamento de marcações."""
         self.destroy()
         MarcsView().mainloop()
+
+    def logout(self):
+        """Realiza o logout e retorna à tela de autenticação."""
+        self.destroy()
+        
 
 if __name__ == "__main__":
     app = MainApp()

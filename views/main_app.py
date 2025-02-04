@@ -7,15 +7,12 @@ from models.cars import Veiculo
 from models.marcs import Marcacoes
 from tkinter import messagebox
 
-# Talvez adicionar graficos ( volume de marcações, clientes e veiculos). 
-#Melhorar design, adicionar mais funcionabilidades... mudar fundo de bem vindo...
-
 class MainApp(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("Pc Auto - Principal")
         self.geometry("1000x700")  # Tela maior
-        self.configure(bg="#2e2e2e")
+        self.configure(bg="#1e1e1e")  # Fundo mais escuro
 
         self.create_widgets()
 
@@ -26,38 +23,42 @@ class MainApp(ctk.CTk):
             self,
             text="Bem-vindo ao Pc Auto!",
             font=("Arial", 28, "bold"),
-            text_color="white"
+            text_color="white",
+            corner_radius=10
         )
-        self.label_welcome.pack(pady=20)
+        self.label_welcome.pack(pady=20, padx=20, fill="x")
 
-        # Frame para os cards
-        self.card_frame = ctk.CTkFrame(self, fg_color="#2e2e2e")
-        self.card_frame.pack(pady=20, padx=20, fill="both", expand=True)
+        # Frame principal para navegação e cards
+        self.main_frame = ctk.CTkFrame(self, fg_color="#2e2e2e")
+        self.main_frame.pack(padx=20, pady=10, fill="both", expand=True)
 
-        # Adicionar cards informativos
-        self.create_info_cards()
+        # Dividindo o layout em duas colunas
+        self.main_frame.grid_columnconfigure(0, weight=1)
+        self.main_frame.grid_columnconfigure(1, weight=2)
 
-        # Adicionar botões de navegação
+        # Menu lateral
         self.create_nav_buttons()
+
+        # Frame para os cards informativos
+        self.card_frame = ctk.CTkFrame(self.main_frame, fg_color="#333333")
+        self.card_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
+
+        self.create_info_cards()
 
         # Rodapé
         self.footer = ctk.CTkLabel(
             self,
-            text="Pc Auto © 2025",
+            text="Pc_Auto © 2025",
             font=("Arial", 12),
             fg_color="#1f6aa5",
             text_color="white"
         )
         self.footer.pack(side="bottom", fill="x", pady=10)
 
-        # Configuração do layout da grade para os cards
-        for col in range(3):
-            self.card_frame.grid_columnconfigure(col, weight=1)
-
     def create_nav_buttons(self):
         """Cria os botões de navegação na aplicação."""
-        button_frame = ctk.CTkFrame(self, fg_color="#2e2e2e")
-        button_frame.pack(pady=10, padx=20, fill="x")
+        nav_frame = ctk.CTkFrame(self.main_frame, fg_color="#1f6aa5")
+        nav_frame.grid(row=0, column=0, sticky="ns", padx=10, pady=10)
 
         buttons = [
             ("Gerenciar Clientes", self.abrir_client_view),
@@ -66,13 +67,14 @@ class MainApp(ctk.CTk):
             ("Logout", self.logout)
         ]
 
-        for idx, (text, command) in enumerate(buttons):
+        for text, command in buttons:
             button = ctk.CTkButton(
-                button_frame,
+                nav_frame,
                 text=text,
                 fg_color="#1f6aa5",
                 hover_color="#155a8c",
                 text_color="white",
+                corner_radius=10,
                 command=command
             )
             button.pack(pady=10, padx=20, fill="x")
@@ -90,7 +92,7 @@ class MainApp(ctk.CTk):
         ]
 
         for idx, (title, value) in enumerate(cards):
-            card = ctk.CTkFrame(self.card_frame, fg_color="#1f6aa5", corner_radius=8)
+            card = ctk.CTkFrame(self.card_frame, fg_color="#1f6aa5", corner_radius=12)
             card.grid(row=0, column=idx, padx=10, pady=10, sticky="nsew")
 
             label_title = ctk.CTkLabel(card, text=title, font=("Arial", 16, "bold"), text_color="white")
@@ -98,6 +100,8 @@ class MainApp(ctk.CTk):
 
             label_value = ctk.CTkLabel(card, text=str(value), font=("Arial", 24, "bold"), text_color="white")
             label_value.pack(pady=10)
+
+        self.card_frame.grid_columnconfigure((0, 1, 2), weight=1)
 
     def get_total_clientes(self):
         """Retorna o total de clientes cadastrados."""
@@ -114,22 +118,22 @@ class MainApp(ctk.CTk):
     def abrir_client_view(self):
         """Abre a visualização de gerenciamento de clientes."""
         self.destroy()
-        ClientView().mainloop()
+        client_view().mainloop()
 
     def abrir_car_view(self):
         """Abre a visualização de gerenciamento de veículos."""
         self.destroy()
-        CarView().mainloop()
+        car_view().mainloop()
+    
+    def logout(self):
+        """Realiza o logout do usuário."""
+        if messagebox.askokcancel("Logout", "Deseja realmente sair?"):
+            self.destroy()
 
     def abrir_marcs_view(self):
         """Abre a visualização de gerenciamento de marcações."""
         self.destroy()
-        MarcsView().mainloop()
-
-    def logout(self):
-        """Realiza o logout e retorna à tela de autenticação."""
-        self.destroy()
-        
+        marcs_view().mainloop()
 
 if __name__ == "__main__":
     app = MainApp()

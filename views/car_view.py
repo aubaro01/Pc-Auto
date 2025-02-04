@@ -13,7 +13,6 @@ class CarView(ctk.CTk):
         self.title("Gerenciamento de Veículos")
         self.geometry("1000x700")
         self.resizable(True, True)
-
      
         self.configure(bg="#2e2e2e")
 

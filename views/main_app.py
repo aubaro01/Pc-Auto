@@ -118,22 +118,22 @@ class MainApp(ctk.CTk):
     def abrir_client_view(self):
         """Abre a visualização de gerenciamento de clientes."""
         self.destroy()
-        client_view().mainloop()
+        ClientView().mainloop()
 
     def abrir_car_view(self):
         """Abre a visualização de gerenciamento de veículos."""
         self.destroy()
-        car_view().mainloop()
-    
-    def logout(self):
-        """Realiza o logout do usuário."""
-        if messagebox.askokcancel("Logout", "Deseja realmente sair?"):
-            self.destroy()
+        CarView().mainloop()
 
     def abrir_marcs_view(self):
         """Abre a visualização de gerenciamento de marcações."""
         self.destroy()
-        marcs_view().mainloop()
+        MarcsView().mainloop()
+
+    def logout(self):
+        """Realiza o logout do usuário."""
+        if messagebox.askokcancel("Logout", "Deseja realmente sair?"):
+            self.destroy()
 
 if __name__ == "__main__":
     app = MainApp()

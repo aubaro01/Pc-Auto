@@ -5,7 +5,7 @@ from views.main_app import MainApp
 
 # Melhorar design, janelas de texto 
 #Retirar a mensagem de login 
-
+                    
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
 

@@ -6,6 +6,7 @@ from models.clients import Cliente
 from models.cars import Veiculo
 from models.marcs import Marcacoes
 from tkinter import messagebox
+from datetime import datetime
 
 class MainApp(ctk.CTk):
     def __init__(self):
@@ -137,7 +138,9 @@ class MainApp(ctk.CTk):
         # Espaço para conteúdo adicional (ex: tabelas, gráficos etc.)
         self.content_frame = ctk.CTkFrame(self.main_frame, fg_color="#1F2937")
         self.content_frame.grid(row=2, column=0, sticky="nsew", padx=10, pady=(0,10))
-        # Aqui você pode adicionar widgets extras conforme a necessidade.
+
+        # Adiciona marcações do dia
+        self.add_marcacoes_do_dia()
 
         # ===== Footer =====
         self.footer = ctk.CTkLabel(
@@ -185,6 +188,54 @@ class MainApp(ctk.CTk):
         """Exibe (ou atualiza) o dashboard."""
         print("Exibindo Dashboard")
         # Você pode implementar uma atualização dos cards se necessário.
+
+    def add_marcacoes_do_dia(self):
+        """Adiciona as marcações do dia abaixo dos cards informativos."""
+        hoje = datetime.now().date()
+
+        # Dados de exemplo
+        marcacoes_do_dia = [
+            {
+                'Data_marc': datetime(2023, 10, 10, 9, 0),
+                'Tipo_Trabalho': 'Revisão',
+                'Veiculo': 'Carro A',
+                'Cliente': 'Cliente 1',
+                'Estado': 'Pendente'
+            },
+            {
+                'Data_marc': datetime(2023, 10, 10, 11, 0),
+                'Tipo_Trabalho': 'Troca de Óleo',
+                'Veiculo': 'Carro B',
+                'Cliente': 'Cliente 2',
+                'Estado': 'Concluído'
+            },
+            {
+                'Data_marc': datetime(2023, 10, 10, 14, 0),
+                'Tipo_Trabalho': 'Alinhamento',
+                'Veiculo': 'Carro C',
+                'Cliente': 'Cliente 3',
+                'Estado': 'Em Andamento'
+            }
+        ]
+
+        if marcacoes_do_dia:
+            label_marcacoes_do_dia = ctk.CTkLabel(
+                self.content_frame,
+                text="Marcações do Dia",
+                font=("Arial", 20, "bold"),
+                text_color="white"
+            )
+            label_marcacoes_do_dia.pack(pady=10)
+
+            for marcacao in marcacoes_do_dia:
+                marcacao_text = f"{marcacao['Data_marc'].strftime('%H:%M')} - {marcacao['Tipo_Trabalho']} - {marcacao['Veiculo']} - {marcacao['Cliente']} - {marcacao['Estado']}"
+                label_marcacao = ctk.CTkLabel(
+                    self.content_frame,
+                    text=marcacao_text,
+                    font=("Arial", 14),
+                    text_color="white"
+                )
+                label_marcacao.pack(pady=5)
 
 if __name__ == "__main__":
     app = MainApp()

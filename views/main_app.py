@@ -36,11 +36,10 @@ class MainApp(ctk.CTk):
         self.sidebar_title.pack(pady=20)
 
         nav_buttons = [
-            ("Dashboard", self.show_dashboard),
             ("Gerenciar Clientes", self.abrir_client_view),
-            ("Ver Veículos", self.abrir_car_view),
-            ("Ver Marcações", self.abrir_marcs_view),
-            ("Logout", self.logout)
+            ("Gerenciar Veículos", self.abrir_car_view),
+            ("Gerenciar Marcações", self.abrir_marcs_view),
+            ("Sair", self.logout)
         ]
 
         for text, command in nav_buttons:
@@ -62,7 +61,7 @@ class MainApp(ctk.CTk):
         self.main_frame.grid_rowconfigure(2, weight=1)
 
         # Header com mensagem de boas-vindas
-        self.header_frame = ctk.CTkFrame(self.main_frame, fg_color="#2563EB", corner_radius=0)
+        self.header_frame = ctk.CTkFrame(self.main_frame, fg_color="#1f6aa5", corner_radius=0)
         self.header_frame.grid(row=0, column=0, sticky="ew")
         self.label_welcome = ctk.CTkLabel(
             self.header_frame,
@@ -184,13 +183,8 @@ class MainApp(ctk.CTk):
         if messagebox.askokcancel("Logout", "Deseja realmente sair?"):
             self.destroy()
 
-    def show_dashboard(self):
-        """Exibe (ou atualiza) o dashboard."""
-        print("Exibindo Dashboard")
-        # Você pode implementar uma atualização dos cards se necessário.
-
     def add_marcacoes_do_dia(self):
-        """Adiciona as marcações do dia abaixo dos cards informativos."""
+        """Adiciona as marcações do dia com um layout aprimorado."""
         hoje = datetime.now().date()
 
         # Dados de exemplo
@@ -219,26 +213,72 @@ class MainApp(ctk.CTk):
         ]
 
         if marcacoes_do_dia:
-            label_marcacoes_do_dia = ctk.CTkLabel(
+            # Título da seção
+            label_title = ctk.CTkLabel(
                 self.content_frame,
                 text="Marcações do Dia",
                 font=("Arial", 20, "bold"),
                 text_color="white"
             )
-            label_marcacoes_do_dia.pack(pady=10)
+            label_title.pack(pady=(20, 10))
 
-            marcacoes_frame = ctk.CTkFrame(self.content_frame, fg_color="#2e2e2e", corner_radius=8)
-            marcacoes_frame.pack(fill="both", expand=True, padx=10, pady=10)
+            # Container principal para as marcações com fundo diferenciado e bordas arredondadas
+            container_frame = ctk.CTkFrame(self.content_frame, fg_color="#3b3b3b", corner_radius=10)
+            container_frame.pack(fill="both", expand=True, padx=20, pady=10)
 
-            for idx, marcacao in enumerate(marcacoes_do_dia):
-                marcacao_text = f"{marcacao['Data_marc'].strftime('%H:%M')} - {marcacao['Tipo_Trabalho']} - {marcacao['Veiculo']} - {marcacao['Cliente']} - {marcacao['Estado']}"
-                label_marcacao = ctk.CTkLabel(
-                    marcacoes_frame,
-                    text=marcacao_text,
-                    font=("Arial", 14),
+            # Cabeçalhos das colunas
+            headers = ["Horário", "Tipo de Trabalho", "Veículo", "Cliente", "Estado"]
+            for col_index, header in enumerate(headers):
+                header_label = ctk.CTkLabel(
+                    container_frame,
+                    text=header,
+                    font=("Arial", 14, "bold"),
                     text_color="white"
                 )
-                label_marcacao.grid(row=idx, column=0, padx=10, pady=5, sticky="w")
+                header_label.grid(row=0, column=col_index, padx=10, pady=10, sticky="w")
+
+            # Linha separadora (pode ser ajustada conforme o estilo desejado)
+            separator = ctk.CTkFrame(container_frame, height=2, fg_color="#5a5a5a")
+            separator.grid(row=1, column=0, columnspan=len(headers), sticky="ew", padx=10, pady=(0, 10))
+
+            # Exibição dos dados: cada linha representa uma marcação
+            for row_index, marcacao in enumerate(marcacoes_do_dia, start=2):
+                horario = marcacao['Data_marc'].strftime('%H:%M')
+                row_data = [
+                    horario,
+                    marcacao['Tipo_Trabalho'],
+                    marcacao['Veiculo'],
+                    marcacao['Cliente'],
+                    marcacao['Estado']
+                ]
+
+                for col_index, data in enumerate(row_data):
+                    # Para o campo "Estado", altera a cor do texto conforme o valor
+                    if col_index == 4:
+                        estado = marcacao['Estado']
+                        if estado == "Concluído":
+                            text_color = "green"
+                        elif estado == "Pendente":
+                            text_color = "red"
+                        elif estado == "Em Andamento":
+                            text_color = "orange"
+                        else:
+                            text_color = "white"
+                    else:
+                        text_color = "white"
+
+                    # Alterna a cor de fundo das linhas
+                    bg_color = "#2e2e2e" if row_index % 2 == 0 else "#3b3b3b"
+
+                    data_label = ctk.CTkLabel(
+                        container_frame,
+                        text=data,
+                        font=("Arial", 12),
+                        text_color=text_color,
+                        fg_color=bg_color,
+                        corner_radius=5
+                    )
+                    data_label.grid(row=row_index, column=col_index, padx=10, pady=5, sticky="w")
 
 if __name__ == "__main__":
     app = MainApp()

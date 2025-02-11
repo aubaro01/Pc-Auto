@@ -227,15 +227,18 @@ class MainApp(ctk.CTk):
             )
             label_marcacoes_do_dia.pack(pady=10)
 
-            for marcacao in marcacoes_do_dia:
+            marcacoes_frame = ctk.CTkFrame(self.content_frame, fg_color="#2e2e2e", corner_radius=8)
+            marcacoes_frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+            for idx, marcacao in enumerate(marcacoes_do_dia):
                 marcacao_text = f"{marcacao['Data_marc'].strftime('%H:%M')} - {marcacao['Tipo_Trabalho']} - {marcacao['Veiculo']} - {marcacao['Cliente']} - {marcacao['Estado']}"
                 label_marcacao = ctk.CTkLabel(
-                    self.content_frame,
+                    marcacoes_frame,
                     text=marcacao_text,
                     font=("Arial", 14),
                     text_color="white"
                 )
-                label_marcacao.pack(pady=5)
+                label_marcacao.grid(row=idx, column=0, padx=10, pady=5, sticky="w")
 
 if __name__ == "__main__":
     app = MainApp()

@@ -1,5 +1,7 @@
 import customtkinter as ctk
 from tkinter import ttk
+from views.client_view import ClientView
+from views.marcs_view import MarcsView
 
 # Definir modo de aparência e tema padrão
 ctk.set_appearance_mode("Dark")  # ou "Light"
@@ -41,7 +43,7 @@ class CarView(ctk.CTk):
         self.sidebar_title.pack(pady=20)
 
         self.dashboard_button = ctk.CTkButton(
-            self.sidebar_frame, text="Dashboard", command=self.show_dashboard
+            self.sidebar_frame, text="Menu", command=self.show_dashboard
         )
         self.dashboard_button.pack(pady=10, padx=20, fill="x")
 
@@ -57,6 +59,11 @@ class CarView(ctk.CTk):
 
         self.relatorios_button = ctk.CTkButton(
             self.sidebar_frame, text="Relatórios", command=self.show_relatorios
+        )
+        self.relatorios_button.pack(pady=10, padx=20, fill="x")
+
+        self.relatorios_button = ctk.CTkButton(
+            self.sidebar_frame, text="----", command=self.show_relatorios
         )
         self.relatorios_button.pack(pady=10, padx=20, fill="x")
 
@@ -268,13 +275,19 @@ class CarView(ctk.CTk):
         print("Exibindo Dashboard")
 
     def show_veiculos(self):
-        print("Exibindo Veículos")
+         """Abre a view de gerenciamento de veiculos."""
+         self.destroy()
+         ClientView().mainloop()
 
     def show_clientes(self):
         print("Exibindo Clientes")
 
     def show_relatorios(self):
         print("Exibindo Relatórios")
+    
+    def show_relatorios(self):
+        print("Exibindo Relatórios")
+
 
 
 if __name__ == "__main__":

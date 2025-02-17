@@ -150,9 +150,8 @@ class MarcsView(ctk.CTk):
             self.ver_marcacoes()
 
     def voltar_ao_menu(self):
-        """Volta ao menu principal."""
         self.destroy()
-        from main import MainApp  # Importar aqui para evitar importação circular
+        from views.main_app import MainApp  # Importar aqui para evitar importação circular
         MainApp().mainloop()
 
 if __name__ == "__main__":

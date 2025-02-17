@@ -272,15 +272,20 @@ class CarView(ctk.CTk):
 
     # Métodos para a navegação da sidebar (podem ser expandidos conforme a funcionalidade)
     def show_dashboard(self):
-        print("Exibindo Dashboard")
+        self.destroy()
+        from views.main_app import MainApp  # Importar aqui para evitar importação circular
+        MainApp().mainloop()
+       
 
     def show_veiculos(self):
          """Abre a view de gerenciamento de veiculos."""
          self.destroy()
-         ClientView().mainloop()
+         CarView().mainloop()
 
     def show_clientes(self):
-        print("Exibindo Clientes")
+        """Exibindo Clientes"""
+        self.destroy()
+        ClientView().mainloop()
 
     def show_relatorios(self):
         print("Exibindo Relatórios")

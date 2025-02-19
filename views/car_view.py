@@ -62,11 +62,6 @@ class CarView(ctk.CTk):
         )
         self.relatorios_button.pack(pady=10, padx=20, fill="x")
 
-        self.relatorios_button = ctk.CTkButton(
-            self.sidebar_frame, text="----", command=self.show_relatorios
-        )
-        self.relatorios_button.pack(pady=10, padx=20, fill="x")
-
         # ===== Área Principal =====
         self.main_frame = ctk.CTkFrame(self, fg_color=self.bg_color)
         self.main_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
@@ -276,7 +271,6 @@ class CarView(ctk.CTk):
         from views.main_app import MainApp  # Importar aqui para evitar importação circular
         MainApp().mainloop()
        
-
     def show_veiculos(self):
          """Abre a view de gerenciamento de veiculos."""
          self.destroy()
@@ -288,12 +282,9 @@ class CarView(ctk.CTk):
         ClientView().mainloop()
 
     def show_relatorios(self):
-        print("Exibindo Relatórios")
-    
-    def show_relatorios(self):
-        print("Exibindo Relatórios")
-
-
+        self.destroy()
+        from views.carRelatorio_view import CarRelatorioView  # Importação tardia para evitar circularidade
+        CarRelatorioView().mainloop()
 
 if __name__ == "__main__":
     app = CarView()

@@ -104,3 +104,20 @@ class Veiculo:
                 return 0
             finally:
                 close_connection(connection)    
+
+    @staticmethod
+    def buscar_marcas():
+        """Busca todas as marcas de veículos cadastradas."""
+        connection = create_connection()
+        if connection:
+            try:
+               cursor = connection.cursor(dictionary=True)
+               cursor.execute("SELECT Marca_id, Nome FROM Marca")
+               marcas = cursor.fetchall()
+               print("Marcas carregadas:", marcas)  # Log para depuração
+               return marcas
+            except Exception as e:
+               print(f"Erro ao buscar marcas: {e}")
+               return []
+            finally:
+               close_connection(connection)

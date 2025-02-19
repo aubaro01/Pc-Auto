@@ -1,17 +1,27 @@
-from models.cars import Veiculo
+from controllers.veiculo_controller import VeiculoController
 
-def criar_veiculo(marca, modelo, cliente_id, matricula, km, obs):
-    """Cria um novo veículo."""
-    Veiculo.criar_veiculo(marca, modelo, cliente_id, matricula, km, obs)
+# Criar um novo veículo
+if VeiculoController.criar_veiculo(1, 2, 3, "ABC-1234", 50000, "Revisão em dia"):
+    print("Veículo criado com sucesso!")
+else:
+    print("Erro ao criar veículo.")
 
-def buscar_todos_veiculos():
-    """Busca todos os veículos cadastrados."""
-    return Veiculo.buscar_todos_veiculos()
+# Buscar todos os veículos
+veiculos = VeiculoController.buscar_todos_veiculos()
+if veiculos:
+    for veiculo in veiculos:
+        print(veiculo)
+else:
+    print("Erro ao buscar veículos.")
 
-def atualizar_veiculo(id_veiculo, marca=None, modelo=None, cliente_id=None, matricula=None, km=None, obs=None):
-    """Atualiza os dados de um veículo."""
-    Veiculo.atualizar_veiculo(id_veiculo, marca, modelo, cliente_id, matricula, km, obs)
+# Atualizar um veículo
+if VeiculoController.atualizar_veiculo(1, km=60000, obs="Troca de óleo realizada"):
+    print("Veículo atualizado com sucesso!")
+else:
+    print("Erro ao atualizar veículo.")
 
-def deletar_veiculo(id_veiculo):
-    """Deleta um veículo."""
-    Veiculo.deletar_veiculo(id_veiculo)
+# Deletar um veículo
+if VeiculoController.deletar_veiculo(1):
+    print("Veículo deletado com sucesso!")
+else:
+    print("Erro ao deletar veículo.")

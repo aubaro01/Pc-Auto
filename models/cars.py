@@ -121,3 +121,20 @@ class Veiculo:
                return []
             finally:
                close_connection(connection)
+
+    @staticmethod
+    def buscar_modelos(marca_id):
+        """Busca todos os modelos de veículos cadastrados para uma determinada marca."""
+        connection = create_connection()
+        if connection:
+            try:
+                cursor = connection.cursor(dictionary=True)
+                cursor.execute("SELECT Modelo_id, Nome FROM Modelo WHERE Marca_id = %s", (marca_id,))
+                modelos = cursor.fetchall()
+                print("Modelos carregados:", modelos)  # Log para depuração
+                return modelos
+            except Exception as e:
+                print(f"Erro ao buscar modelos: {e}")
+                return []
+            finally:
+                close_connection(connection)

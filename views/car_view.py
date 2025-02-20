@@ -3,9 +3,10 @@ from tkinter import messagebox
 from views.client_view import ClientView
 from views.marcs_view import MarcsView
 from models.cars import Veiculo
+from models.clients import Cliente
 
 class CarView(ctk.CTk):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.title("Gerenciamento de Veículos")
@@ -14,10 +15,10 @@ class CarView(ctk.CTk):
         self.resizable(True, True)
 
         # Definir cores principais
-        self.bg_color = "#1F2937"      # Fundo principal
-        self.primary_color = "#3B82F6" # Cor primária
-        self.secondary_color = "#2563EB"  # Cor secundária
-        self.text_color = "#F3F4F6"    # Cor do texto
+        self.bg_color = "#1F2937"         # Fundo principal
+        self.primary_color = "#3B82F6"      # Cor primária
+        self.secondary_color = "#2563EB"    # Cor secundária
+        self.text_color = "#F3F4F6"         # Cor do texto
 
         self.configure(bg=self.bg_color)
 
@@ -26,10 +27,21 @@ class CarView(ctk.CTk):
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        # ===== Sidebar de Navegação =====
+        self._create_sidebar()
+        self._create_main_area()
+
+        # Variável para armazenar todos os veículos (para busca)
+        self.veiculos_all = []
+        self.veiculos = []
+
+        # Carregar os dados iniciais na tabela
+        self.carregar_veiculos()
+
+    def _create_sidebar(self) -> None:
+        """Cria a sidebar de navegação."""
         self.sidebar_frame = ctk.CTkFrame(self, width=220, fg_color="#2e2e2e")
         self.sidebar_frame.grid(row=0, column=0, sticky="nswe")
-        self.sidebar_frame.grid_propagate(False)  # Mantém a largura fixa
+        self.sidebar_frame.grid_propagate(False)
 
         self.sidebar_title = ctk.CTkLabel(
             self.sidebar_frame, 
@@ -59,7 +71,8 @@ class CarView(ctk.CTk):
         )
         self.relatorios_button.pack(pady=10, padx=20, fill="x")
 
-        # ===== Área Principal =====
+    def _create_main_area(self) -> None:
+        """Cria a área principal da aplicação."""
         self.main_frame = ctk.CTkFrame(self, fg_color=self.bg_color)
         self.main_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
         self.main_frame.grid_columnconfigure(0, weight=1)
@@ -156,7 +169,6 @@ class CarView(ctk.CTk):
         self.table_frame = ctk.CTkScrollableFrame(self.main_frame, fg_color=self.bg_color)
         self.table_frame.grid(row=3, column=0, sticky="nsew", padx=10, pady=(0, 10))
         self.table_frame.grid_columnconfigure(0, weight=1)
-        self.table_frame.grid_rowconfigure(0, weight=1)
 
         # Cabeçalho da Tabela
         self.table_header = ctk.CTkFrame(self.table_frame, fg_color=self.secondary_color)
@@ -170,33 +182,35 @@ class CarView(ctk.CTk):
                 text_color=self.text_color
             )
             label.grid(row=0, column=i, padx=10, pady=5, sticky="w")
+        
+        # Container para as linhas da tabela
+        self.table_rows_frame = ctk.CTkFrame(self.table_frame, fg_color=self.bg_color)
+        self.table_rows_frame.grid(row=1, column=0, sticky="nsew")
 
-        # Carregar os dados iniciais na tabela
-        self.veiculos = []
-        self.carregar_veiculos()
-
-    def carregar_veiculos(self):
+    def carregar_veiculos(self) -> None:
         """Carrega os dados dos veículos na tabela."""
         resultados = Veiculo.buscar_todos_veiculos()
-        self.veiculos = resultados
+        self.veiculos_all = resultados
+        self.veiculos = resultados.copy()
         self.atualizar_tabela()
 
-    def atualizar_tabela(self):
+    def atualizar_tabela(self) -> None:
         """Atualiza a tabela com os dados dos veículos."""
-        # Limpar tabela antes de inserir
-        for widget in self.table_frame.winfo_children()[1:]:  # Ignorar o cabeçalho
-            widget.destroy()
+        # Limpar as linhas atuais da tabela
+        self.table_rows_frame.destroy()
+        self.table_rows_frame = ctk.CTkFrame(self.table_frame, fg_color=self.bg_color)
+        self.table_rows_frame.grid(row=1, column=0, sticky="nsew")
 
-        # Inserir dados na tabela
         for i, veiculo in enumerate(self.veiculos):
-            row_frame = ctk.CTkFrame(self.table_frame, fg_color="#2D3748", corner_radius=10)
-            row_frame.grid(row=i + 1, column=0, sticky="ew", pady=5)
+            row_frame = ctk.CTkFrame(self.table_rows_frame, fg_color="#2D3748", corner_radius=10)
+            row_frame.grid(row=i, column=0, sticky="ew", pady=5, padx=5)
 
             # Colunas de dados
             for j, key in enumerate(["Marca", "Modelo", "Cliente", "Matrícula", "Km", "OBS"]):
+                valor = veiculo.get(key, "")
                 label = ctk.CTkLabel(
                     row_frame,
-                    text=veiculo[key],
+                    text=valor,
                     font=("Arial", 12),
                     text_color=self.text_color
                 )
@@ -230,19 +244,18 @@ class CarView(ctk.CTk):
             )
             delete_button.pack(side="left")
 
-    def abrir_formulario(self, veiculo=None):
+    def abrir_formulario(self, veiculo: dict = None) -> None:
         """Abre o formulário para adicionar ou editar um veículo."""
         self.formulario = ctk.CTkToplevel(self)
         self.formulario.title("Adicionar Veículo" if not veiculo else "Editar Veículo")
         self.formulario.geometry("400x400")
         self.formulario.resizable(False, False)
-        self.formulario.grab_set()  # Bloqueia a janela principal
+        self.formulario.grab_set()
 
         # Carregar marcas, modelos e clientes da base de dados
         marcas = Veiculo.buscar_marcas()
-        clientes = Veiculo.buscar_clientes()
+        clientes = Cliente.buscar_clientes()
 
-        # Verificar se os dados foram carregados corretamente
         if not marcas or not clientes:
             messagebox.showerror("Erro", "Não foi possível carregar os dados necessários.")
             self.formulario.destroy()
@@ -256,7 +269,6 @@ class CarView(ctk.CTk):
             label.grid(row=i, column=0, padx=10, pady=5, sticky="w")
 
             if campo == "Marca":
-                # Combobox para marcas
                 self.marca_combobox = ctk.CTkComboBox(
                     self.formulario,
                     values=[marca["Nome"] for marca in marcas],
@@ -265,12 +277,10 @@ class CarView(ctk.CTk):
                 self.marca_combobox.grid(row=i, column=1, padx=10, pady=5, sticky="ew")
                 self.entries[campo] = self.marca_combobox
             elif campo == "Modelo":
-                # Combobox para modelos (será preenchido dinamicamente)
                 self.modelo_combobox = ctk.CTkComboBox(self.formulario, values=[])
                 self.modelo_combobox.grid(row=i, column=1, padx=10, pady=5, sticky="ew")
                 self.entries[campo] = self.modelo_combobox
             elif campo == "Cliente":
-                # Combobox para clientes
                 self.cliente_combobox = ctk.CTkComboBox(
                     self.formulario,
                     values=[cliente["NomeCliente"] for cliente in clientes]
@@ -278,20 +288,32 @@ class CarView(ctk.CTk):
                 self.cliente_combobox.grid(row=i, column=1, padx=10, pady=5, sticky="ew")
                 self.entries[campo] = self.cliente_combobox
             else:
-                # Entrada de texto para os demais campos
                 entry = ctk.CTkEntry(self.formulario, width=250)
                 entry.grid(row=i, column=1, padx=10, pady=5, sticky="ew")
                 self.entries[campo] = entry
 
-        # Preencher formulário se estiver editando
+        # Se estiver editando, preenche os campos com os dados existentes;
+        # Caso contrário, define os valores padrão com base no primeiro item de cada lista.
         if veiculo:
-            self.marca_combobox.set(veiculo["Marca"])
-            self.carregar_modelos(veiculo["Marca"])
-            self.modelo_combobox.set(veiculo["Modelo"])
-            self.cliente_combobox.set(veiculo["Cliente"])
-            self.entries["Matrícula"].insert(0, veiculo["Matricula"])
-            self.entries["Km"].insert(0, veiculo["Km"])
-            self.entries["OBS"].insert(0, veiculo["OBS"])
+            self.marca_combobox.set(veiculo.get("Marca", ""))
+            self.carregar_modelos(veiculo.get("Marca", ""))
+            self.modelo_combobox.set(veiculo.get("Modelo", ""))
+            self.cliente_combobox.set(veiculo.get("Cliente", ""))
+            self.entries["Matrícula"].insert(0, veiculo.get("Matricula", ""))
+            self.entries["Km"].insert(0, str(veiculo.get("Km", "")))
+            self.entries["OBS"].insert(0, veiculo.get("OBS", ""))
+        else:
+            # Define os valores padrão para um novo veículo
+            marcas_valores = self.marca_combobox.cget("values")
+            if marcas_valores:
+                self.marca_combobox.set(marcas_valores[0])
+                self.carregar_modelos(marcas_valores[0])
+                modelos_valores = self.modelo_combobox.cget("values")
+                if modelos_valores:
+                    self.modelo_combobox.set(modelos_valores[0])
+            clientes_valores = self.cliente_combobox.cget("values")
+            if clientes_valores:
+                self.cliente_combobox.set(clientes_valores[0])
 
         # Botões de Salvar e Cancelar
         button_frame = ctk.CTkFrame(self.formulario, fg_color="transparent")
@@ -319,46 +341,52 @@ class CarView(ctk.CTk):
         )
         cancel_button.pack(side="left")
 
-    def carregar_modelos(self, marca_nome):
+    def carregar_modelos(self, marca_nome: str) -> None:
         """Carrega os modelos da marca selecionada."""
         marcas = Veiculo.buscar_marcas()
         marca_id = next((marca["Marca_id"] for marca in marcas if marca["Nome"] == marca_nome), None)
         if marca_id:
             modelos = Veiculo.buscar_modelos_por_marca(marca_id)
             self.modelo_combobox.configure(values=[modelo["Nome"] for modelo in modelos])
+        else:
+            self.modelo_combobox.configure(values=[])
 
-    def salvar_veiculo(self, veiculo=None):
+    def salvar_veiculo(self, veiculo: dict = None) -> None:
         """Salva um novo veículo ou atualiza um existente."""
         marcas = Veiculo.buscar_marcas()
         modelos = Veiculo.buscar_modelos_por_marca(
             next((marca["Marca_id"] for marca in marcas if marca["Nome"] == self.marca_combobox.get()), None)
         )
-        clientes = Veiculo.buscar_clientes()
+        clientes = Cliente.buscar_clientes()
 
         marca_id = next((marca["Marca_id"] for marca in marcas if marca["Nome"] == self.marca_combobox.get()), None)
         modelo_id = next((modelo["Modelo_id"] for modelo in modelos if modelo["Nome"] == self.modelo_combobox.get()), None)
         cliente_id = next((cliente["idCliente"] for cliente in clientes if cliente["NomeCliente"] == self.cliente_combobox.get()), None)
 
-        matricula = self.entries["Matrícula"].get()
-        km = self.entries["Km"].get()
-        obs = self.entries["OBS"].get()
+        matricula = self.entries["Matrícula"].get().strip()
+        km = self.entries["Km"].get().strip()
+        obs = self.entries["OBS"].get().strip()
 
         if all([marca_id, modelo_id, cliente_id, matricula, km]):
+            try:
+                km_int = int(km)
+            except ValueError:
+                messagebox.showwarning("Erro", "O campo Km deve ser um número.")
+                return
+
             if veiculo:
-                # Atualizar veículo existente
                 Veiculo.atualizar_veiculo(
-                    veiculo["Veiculo_id"], marca_id, modelo_id, cliente_id, matricula, km, obs
+                    veiculo["Veiculo_id"], marca_id, modelo_id, cliente_id, matricula, km_int, obs
                 )
             else:
-                # Criar novo veículo
-                Veiculo.criar_veiculo(marca_id, modelo_id, cliente_id, matricula, km, obs)
+                Veiculo.criar_veiculo(marca_id, modelo_id, cliente_id, matricula, km_int, obs)
             self.carregar_veiculos()
             self.formulario.destroy()
             messagebox.showinfo("Sucesso", "Veículo salvo com sucesso!")
         else:
             messagebox.showwarning("Erro", "Todos os campos devem ser preenchidos.")
 
-    def remover_veiculo(self, veiculo):
+    def remover_veiculo(self, veiculo: dict) -> None:
         """Remove um veículo da lista."""
         confirm = messagebox.askyesno("Remover", "Tem certeza que deseja remover este veículo?")
         if confirm:
@@ -366,31 +394,36 @@ class CarView(ctk.CTk):
             self.carregar_veiculos()
             messagebox.showinfo("Sucesso", "Veículo removido com sucesso!")
 
-    def pesquisar_veiculos(self):
+    def pesquisar_veiculos(self) -> None:
         """Filtra os veículos na tabela com base no termo de pesquisa."""
-        termo = self.search_entry.get().lower()
-        resultados = [v for v in self.veiculos if termo in v["Matricula"].lower() or termo in v["Cliente"].lower()]
-        self.veiculos = resultados
+        termo = self.search_entry.get().lower().strip()
+        if termo == "":
+            self.veiculos = self.veiculos_all.copy()
+        else:
+            self.veiculos = [
+                v for v in self.veiculos_all 
+                if termo in v.get("Matricula", "").lower() or termo in v.get("Cliente", "").lower()
+            ]
         self.atualizar_tabela()
 
-    # Métodos para a navegação da sidebar
-    def show_dashboard(self):
+    def show_dashboard(self) -> None:
+        """Navega para o dashboard principal."""
         self.destroy()
-        from views.main_app import MainApp  # Importar aqui para evitar importação circular
+        from views.main_app import MainApp  # Importação local para evitar circularidade
         MainApp().mainloop()
-       
-    def show_veiculos(self):
-        """Abre a view de gerenciamento de veículos."""
+
+    def show_veiculos(self) -> None:
+        """Recarrega a view de veículos."""
         self.destroy()
         CarView().mainloop()
 
-    def show_clientes(self):
-        """Exibindo Clientes"""
+    def show_clientes(self) -> None:
+        """Exibe a view de gerenciamento de clientes."""
         self.destroy()
         ClientView().mainloop()
 
-    def show_relatorios(self):
-        """Exibindo Relatórios"""
+    def show_relatorios(self) -> None:
+        """Exibe a view de relatórios."""
         self.destroy()
         from views.carRelatorio_view import CarRelatorioView 
         CarRelatorioView().mainloop()

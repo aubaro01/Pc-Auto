@@ -37,12 +37,12 @@ class Veiculo:
             try:
                 cursor = connection.cursor(dictionary=True)
                 query = """
-                SELECT Veiculo.Veiculo_id, Marca.Nome AS Marca, Modelo.Nome AS Modelo, Cliente.NomeCliente AS Cliente,
+                SELECT Veiculo.id_veiculo, Marca.Nome AS Marca, Modelo.Nome AS Modelo, Cliente.NomeCliente AS Cliente,
                        Veiculo.Matricula, Veiculo.Km, Veiculo.OBS
                 FROM Veiculo
-                JOIN Marca ON Veiculo.Marca_id = Marca.Marca_id
-                JOIN Modelo ON Veiculo.Modelo_id = Modelo.Modelo_id
-                JOIN Cliente ON Veiculo.Cliente_id = Cliente.idCliente
+                JOIN Marca ON Veiculo.Marca_id = Marca.id_marca
+                JOIN Modelo ON Veiculo.Modelo_id = Modelo.id_modelo
+                JOIN Cliente ON Veiculo.Cliente_id = Cliente.id_cliente
                 """
                 cursor.execute(query)
                 resultados = cursor.fetchall()
@@ -63,7 +63,7 @@ class Veiculo:
                 query = """
                 UPDATE Veiculo
                 SET Marca_id = %s, Modelo_id = %s, Cliente_id = %s, Matricula = %s, Km = %s, OBS = %s
-                WHERE Veiculo_id = %s
+                WHERE id_veiculo = %s
                 """
                 cursor.execute(query, (marca, modelo, cliente_id, matricula, km, obs, id_veiculo))
                 connection.commit()
@@ -80,7 +80,7 @@ class Veiculo:
         if connection:
             try:
                 cursor = connection.cursor()
-                query = "DELETE FROM Veiculo WHERE Veiculo_id = %s"
+                query = "DELETE FROM Veiculo WHERE id_veiculo = %s"
                 cursor.execute(query, (id_veiculo,))
                 connection.commit()
                 print("Veículo deletado com sucesso!")
@@ -96,7 +96,7 @@ class Veiculo:
         if connection:
             try:
                 cursor = connection.cursor()
-                cursor.execute("SELECT COUNT(*) FROM veiculo")
+                cursor.execute("SELECT COUNT(*) FROM Veiculo")
                 total = cursor.fetchone()[0]
                 return total
             except Exception as e:
@@ -112,7 +112,7 @@ class Veiculo:
         if connection:
             try:
                cursor = connection.cursor(dictionary=True)
-               cursor.execute("SELECT Marca_id, Nome FROM Marca")
+               cursor.execute("SELECT id_marca, Nome FROM Marca")
                marcas = cursor.fetchall()
                print("Marcas carregadas:", marcas)  # Log para depuração
                return marcas
@@ -129,9 +129,9 @@ class Veiculo:
         if connection:
             try:
                 cursor = connection.cursor(dictionary=True)
-                cursor.execute("SELECT Modelo_id, Nome FROM Modelo WHERE Marca_id = %s", (marca_id,))
+                cursor.execute("SELECT id_modelo, Nome FROM Modelo WHERE Marca_id = %s", (marca_id,))
                 modelos = cursor.fetchall()
-                print("Modelos carregados:", modelos)  # Log para depuração
+                print("Modelos carregados:", modelos) 
                 return modelos
             except Exception as e:
                 print(f"Erro ao buscar modelos: {e}")

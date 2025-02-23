@@ -3,6 +3,7 @@ from tkinter import messagebox
 from models.clients import Cliente
 import tkinter as tk
 
+#Melhorar design, navBar, botões.abs
 class ClientView(ctk.CTk):
         def __init__(self):
             super().__init__()

@@ -5,6 +5,10 @@ from views.marcs_view import MarcsView
 from models.cars import Veiculo
 from models.clients import Cliente
 
+#Mrlhorar design, colocar as funções a trabalhar
+#Adicionar funções de pesquisa e de adicionar veículos
+#Adicionar funções de editar e remover veículos
+
 class CarView(ctk.CTk):
         def __init__(self) -> None:
             super().__init__()

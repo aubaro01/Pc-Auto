@@ -1,13 +1,29 @@
-# Pc_Auto
 
-Tem como função fazer a gestão para uma oficina.
+# PC_AUTO
 
-Deve fazer a gestão de clientes, veiculos e de marcações. 
+Uma App para gestão de uma oficina.
 
-<p>Desta forma vai ajudar a reduzir <strong> o uso de papel </strong> pela oficina e tornar mais eficiente para quem trabalha no escritório.</p>
+Deve fazer a gestão de clientes, veiculos e de marcações.
+
+Desta forma vai ajudar a reduzir o uso de papel pela oficina e tornar mais eficiente para quem trabalha no escritório.
+
+## Stack utilizada
+
+ **Python, MySQl**
 
 
- <p>Planejamento inicial para <strong> a base de dados</p></strong></p>
+## Funcionalidades
+
+- Registro de marcações, clientes e veiculos.
+- Sistema de aviso de marcações por email.
+- Autenticação de users
+
+## Por melhorar
+
+ - Melhorias de usabilidade e design.
+
+
+ ## Planejamento inicial para a base de dados
  
 ![image](https://github.com/user-attachments/assets/2d2bbdac-3157-4902-954d-bc26466a9bd7)
 
